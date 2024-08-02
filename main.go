@@ -7,6 +7,7 @@ import (
 )
 
 func main() {
+	test()
 	InitDatabase()
 	defer DB.Close()
 
