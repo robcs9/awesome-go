@@ -1,13 +1,14 @@
 package main
 
 import (
+	"log"
 	"net/http"
 	"strconv"
+
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	test()
 	InitDatabase()
 	defer DB.Close()
 
@@ -18,8 +19,9 @@ func main() {
 	// HTTP routing endpoints
 	e.GET("/", func(c *gin.Context) {
 		todos := ReadTodoList()
-		c.HTML(http.StatusOK, "index.html", gin.H{
-			"todos": todos,
+		log.Println(todos)
+		c.HTML(http.StatusOK, "task.html", gin.H{
+			// "todos": todos,
 		})
 	})
 	
@@ -33,6 +35,7 @@ func main() {
 			"status": status,
 			"id": id,
 		})
+		
 	})
 
 	e.DELETE("/todos/:id", func (c *gin.Context) {

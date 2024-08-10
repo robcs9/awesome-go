@@ -2,7 +2,9 @@ package main
 
 import (
 	"database/sql"
+	// "fmt"
 	"log"
+
 	_ "github.com/mattn/go-sqlite3"
 )
 
@@ -50,13 +52,15 @@ func DeleteTodo(id int64) error {
 
 func ReadTodoList() []ToDo {
 	rows, _ := DB.Query("SELECT id, title, status FROM todos")
-	defer rows.Close()
-
+	
 	todos := make([]ToDo, 0)
-	for rows.Next() {
-		var todo ToDo
-		rows.Scan(&todo.Id, &todo.Title, &todo.Status)
-		todos = append(todos, todo)
+	if rows != nil {
+		for rows.Next() {
+			var todo ToDo
+			rows.Scan(&todo.Id, &todo.Title, &todo.Status)
+			todos = append(todos, todo)
+		}
+		defer rows.Close()
 	}
 	return todos
 }
